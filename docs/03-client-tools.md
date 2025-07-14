@@ -20,6 +20,12 @@ Leave all settings to default by pressing `ENTER` at any prompt.
 
 Add this key to the local `authorized_keys` (`controlplane01`) as in some commands we `scp` to ourself.
 
+cat >> ~/.ssh/authorized_keys <<EOF
+<ssh_public_key_for_control_node>
+EOF
+
+OR
+
 ```bash
 cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
 ```
