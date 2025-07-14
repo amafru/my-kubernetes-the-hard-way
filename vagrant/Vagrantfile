@@ -93,8 +93,9 @@ Vagrant.configure("2") do |config|
   (1..NUM_CONTROL_NODES).each do |i|
     config.vm.define "controlplane0#{i}" do |node|
       # Name shown in the GUI
+      # VMWare doesn't support 'name'. Uses the name spec'd in vm.define. 
       node.vm.provider "vmware_desktop" do |vmware|
-        vmware.name = "kubernetes-ha-controlplane-#{i}"
+        # vmware.name = "kubernetes-ha-controlplane-#{i}"
         vmware.memory = RESOURCES["control"][i > 2 ? 2 : i]["ram"]
         vmware.cpus = RESOURCES["control"][i > 2 ? 2 : i]["cpu"]
       end
@@ -114,7 +115,7 @@ Vagrant.configure("2") do |config|
   # Provision Load Balancer Node
   config.vm.define "loadbalancer" do |node|
     node.vm.provider "vmware_desktop" do |vmware|
-      vmware.name = "kubernetes-ha-lb"
+      # vmware.name = "kubernetes-ha-lb"
       vmware.memory = 512
       vmware.cpus = 1
     end
@@ -130,7 +131,7 @@ Vagrant.configure("2") do |config|
   (1..NUM_WORKER_NODE).each do |i|
     config.vm.define "node0#{i}" do |node|
       node.vm.provider "vmware_desktop" do |vmware|
-        vmware.name = "kubernetes-ha-node-#{i}"
+        # vmware.name = "kubernetes-ha-node-#{i}"
         vmware.memory = RESOURCES["worker"]["ram"]
         vmware.cpus = RESOURCES["worker"]["cpu"]
       end
