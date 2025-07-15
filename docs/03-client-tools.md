@@ -82,8 +82,10 @@ The environment variable `ARCH` is pre-set during VM deployment according to whe
 
 ### Linux
 
+# Download kubectl using curl following the instructions at https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/
+# then make it executable and move to usr path as below
+
 ```bash
-curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/${ARCH}/kubectl"
 chmod +x kubectl
 sudo mv kubectl /usr/local/bin/
 ```
