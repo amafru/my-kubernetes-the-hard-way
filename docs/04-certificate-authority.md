@@ -358,7 +358,7 @@ Run the following, and select option 1 to check all required certificates were g
 [//]: # (command:./cert_verify.sh 1)
 
 ```
-./cert_verify.sh
+./cert_verify.sh # Basically run this file. (It's linked to the real script at /vagrant/ubuntu/cert_verify.sh)
 ```
 
 Expected output:

@@ -11,3 +11,6 @@ temp
 *.kubeconfig
 quick-steps
 venv
+
+# Local Machine Files
+.DS_Store
