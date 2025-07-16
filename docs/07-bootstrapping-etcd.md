@@ -18,8 +18,11 @@ The commands in this lab must be run on each controller instance: `controlplane0
 
 Download the official etcd release binaries from the [etcd](https://github.com/etcd-io/etcd) GitHub project:
 
-[//]: # (host:controlplane01-controlplane02)
+[//]: # "host:controlplane01-controlplane02"
 
+# NOTE (Additional Pre-reqs below, BEFORE running these commands)
+# 1. Set environment variable ARCH to match current system e.g. arm64 for ubuntu vm on Mac M1
+# 2. Update ETCD_VERSION to latest LTS? 
 
 ```bash
 ETCD_VERSION="v3.5.9"
@@ -112,11 +115,20 @@ EOF
 }
 ```
 
+### Verify that the etcd service has indeed started. This is where I caught service not started because ARCH
+### was somehow set to amd64 instead of arm64 (what I needed), therefore systemd had not started etcd successfully
+
+```bash
+{
+  sudo systemctl status etcd
+}
+```
+
 > Remember to run the above commands on each controller node: `controlplane01`, and `controlplane02`.
 
 ## Verification
 
-[//]: # (sleep:5)
+[//]: # "sleep:5"
 
 List the etcd cluster members.
 
