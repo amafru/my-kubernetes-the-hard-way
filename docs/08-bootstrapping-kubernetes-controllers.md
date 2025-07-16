@@ -11,6 +11,15 @@ If you examine the command line arguments passed to the various control plane co
 
 The commands in this lab up as far as the load balancer configuration must be run on each controller instance: `controlplane01`, and `controlplane02`. Login to each controller instance using SSH Terminal.
 
+You can run commands across multiple terminals on Mac (iTerm2) by turning on Broadcast input mode. 
+Steps:
+- Cmd + D = split terminal vertically
+- Sign into each vm in the separate panes
+- Go top right of each* pane > click ellipses > Toggle Broadcast Input
+- Good to go
+
+OR
+
 You can perform this step with [tmux](01-prerequisites.md#running-commands-in-parallel-with-tmux).
 
 ## Provision the Kubernetes Control Plane
@@ -214,6 +223,10 @@ sudo chmod 600 /var/lib/kubernetes/*.kubeconfig
 
 At `controlplane01` and `controlplane02` nodes, run the following, selecting option 3
 
+# NOTE: On multi-control plane node clusters the test may fail and exit declaring a 
+# mismatch on kube-api-server systemd file. The only diff between the systemd files should 
+# be the IP address. And this is expected. So that failure is probably harmless
+
 [//]: # (command:./cert_verify.sh 3)
 
 ```
@@ -239,6 +252,25 @@ At `controlplane01` and `controlplane02` nodes, run the following, selecting opt
 [//]: # (sleep:10)
 
 After running the above commands on both controlplane nodes, run the following on `controlplane01`
+# NOTE: kubectl get componentstatuses may not show etcd-1 output.
+
+Why?
+
+In production, the API server should connect to etcd peers using a dedicated etcd-client.crt and etcd-client.key signed by the same CA as the cluster.
+
+In this test setup, the API server reuses etcd-server.crt for --etcd-certfile and --etcd-keyfile. This works locally for the member on the same node but can fail the TLS handshake with other members because --client-cert-auth is enabled.
+
+You can verify this:
+
+Check etcd unit file: sudo systemctl cat etcd
+> --client-cert-auth defaults to true if not set to false.
+
+Check kube-apiserver unit file: sudo systemctl cat kube-apiserver
+> --etcd-certfile reuses the server cert instead of a proper client cert.
+
+This is fine for learning, but in production you’d always use separate client certs.
+
+If etcd-1 is missing from the output of the below command, the cluster is still functional.
 
 ```bash
 kubectl get componentstatuses --kubeconfig admin.kubeconfig
@@ -254,7 +286,7 @@ NAME                 STATUS    MESSAGE              ERROR
 controller-manager   Healthy   ok
 scheduler            Healthy   ok
 etcd-0               Healthy   {"health": "true"}
-etcd-1               Healthy   {"health": "true"}
+etcd-1               Healthy   {"health": "true"} 
 ```
 
 > Remember to run the above commands on each controller node: `controlplane01`, and `controlplane02`.

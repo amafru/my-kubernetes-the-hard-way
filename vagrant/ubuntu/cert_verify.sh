@@ -349,10 +349,10 @@ check_systemd_api()
                 SACERT="${PKI}/service-account.crt"
                 KCCERT="${PKI}/apiserver-kubelet-client.crt"
                 KCKEY="${PKI}/apiserver-kubelet-client.key"
-                if [ $ADVERTISE_ADDRESS == $PRIMARY_IP ] && [ $CLIENT_CA_FILE == $CACERT ] && [ $ETCD_CA_FILE == $CACERT ] && \
-                   [ $ETCD_CERT_FILE == "${PKI}/etcd-server.crt" ] && [ $ETCD_KEY_FILE == "${PKI}/etcd-server.key" ] && \
-                   [ $KUBELET_CERTIFICATE_AUTHORITY == $CACERT ] && [ $KUBELET_CLIENT_CERTIFICATE == $KCCERT ] && [ $KUBELET_CLIENT_KEY == $KCKEY ] && \
-                   [ $SERVICE_ACCOUNT_KEY_FILE == $SACERT ] && [ $TLS_CERT_FILE == $APICERT ] && [ $TLS_PRIVATE_KEY_FILE == $APIKEY ]
+                if [ "$ADVERTISE_ADDRESS" == "$PRIMARY_IP" ] && [ "$CLIENT_CA_FILE" == "$CACERT" ] && [ "$ETCD_CA_FILE" == "$CACERT" ] && \
+                   [ "$ETCD_CERT_FILE" == "${PKI}/etcd-server.crt" ] && [ "$ETCD_KEY_FILE" == "${PKI}/etcd-server.key" ] && \
+                   [ "$KUBELET_CERTIFICATE_AUTHORITY" == "$CACERT" ] && [ "$KUBELET_CLIENT_CERTIFICATE" == "$KCCERT" ] && [ "$KUBELET_CLIENT_KEY" == "$KCKEY" ] && \
+                   [ "$SERVICE_ACCOUNT_KEY_FILE" == "$SACERT" ] && [ "$TLS_CERT_FILE" == "$APICERT" ] && [ "$TLS_PRIVATE_KEY_FILE" == "$APIKEY" ]
                     then
                         printf "${SUCCESS}kube-apiserver advertise-address/ client-ca-file/ etcd-cafile/ etcd-certfile/ etcd-keyfile/ kubelet-certificate-authority/ kubelet-client-certificate/ kubelet-client-key/ service-account-key-file/ tls-cert-file/ tls-private-key-file are correct\n${NC}"
                     else
