@@ -25,6 +25,12 @@ Download and install [VirtualBox](https://www.virtualbox.org/wiki/Downloads) on 
 
 ### Vagrant
 
+# NOTE: Double check that ARCH variable has been correctly set to the system architecture in use e.g. arm64
+# AVOIDS: A world of pain later where the wrong binaries keep being downloaded for your system
+# The command in 'ubuntu/vagrant/setup-hosts.sh' or 'apple-silicon/scripts/01-setup-hosts.sh' should
+# have done this already. Check '/etc/environment' file after vm deployment to confirm that ARCH value 
+# matches output of command 'uname -m'
+
 Once VirtualBox is installed you may chose to deploy virtual machines manually on it.
 Vagrant provides an easier way to deploy multiple virtual machines on VirtualBox more consistently.
 

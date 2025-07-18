@@ -15,7 +15,7 @@ NETWORK=$(echo $PRIMARY_IP | awk 'BEGIN {FS="."} ; { printf("%s.%s.%s", $1, $2, 
 echo "PRIMARY_IP=${PRIMARY_IP}" >> /etc/environment
 
 # Export architecture as environment variable to download correct versions of software
-echo "ARCH=amd64"  | sudo tee -a /etc/environment > /dev/null
+echo "ARCH=$(uname -m)"  | sudo tee -a /etc/environment > /dev/null
 
 # remove ubuntu-jammy entry
 sed -e '/^.*ubuntu-jammy.*/d' -i /etc/hosts

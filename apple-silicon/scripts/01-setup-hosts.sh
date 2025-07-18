@@ -8,7 +8,7 @@ cat /tmp/hostentries | sudo tee -a /etc/hosts &> /dev/null
 echo "PRIMARY_IP=$(ip route | grep default | awk '{ print $9 }')" | sudo tee -a /etc/environment > /dev/null
 
 # Export architecture as environment variable to download correct versions of software
-echo "ARCH=arm64"  | sudo tee -a /etc/environment > /dev/null
+echo "ARCH=$(uname -m)"  | sudo tee -a /etc/environment > /dev/null
 
 # Enable password auth in sshd so we can use ssh-copy-id
 # Enable password auth in sshd so we can use ssh-copy-id
