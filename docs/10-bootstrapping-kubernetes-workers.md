@@ -158,8 +158,8 @@ Copy keys and config to correct directories and secure
 CIDR ranges used *within* the cluster
 
 ```bash
-POD_CIDR=10.244.0.0/16
-SERVICE_CIDR=10.96.0.0/16
+export POD_CIDR=10.244.0.0/16
+export SERVICE_CIDR=10.96.0.0/16
 ```
 
 Compute cluster DNS addess, which is conventionally .10 in the service CIDR range
@@ -289,9 +289,53 @@ On `node01`:
 }
 ```
 
-> Remember to run the above commands on worker node: `node01`
+> Remember to run the above commands on worker node: `node01` 
 
-## Verification
+# POSSIBLE ISSUES/ERRORS THAT MAY BE SEEN
+
+## You may have to wait about 5+ minutes for kubelet to start. 
+- It can take a little while to start and show up as Active
+
+## Kubelet fails to start/hangs on 'loading'
+Checks
+
+```bash
+sudo service kubelet status
+```
+
+If output shows the process stuck on 'loading'... Run
+
+```bash
+sudo journalctl -u kubelet -r
+```
+Displays log entries for the service in reverse order. 
+If reason for failure includes something like '...can not run with swap active...'
+Disable swap on the vm by following these steps. 
+
+*Some ubuntu vm box configurations run with Vagrant have swap turned ON by default. Kubernetes is set to not allow this setting as it confuses RAM monitoring by making a part of the system hard drive(s) usable as Memory, when RAM is full. Kubernetes likes to have full view/control of the actual RAM available on the system with no fakers*
+
+```bash
+sudo swapoff -a
+```
+
+Become root
+```bash
+sudo su
+```
+
+Edit fstab file and comment out the line that contains swap (add # in front of it).
+```bash
+sudo vim /etc/fstab
+```
+
+Verify it's off:
+
+```bash
+free -h
+```
+### *Ensure Swap: 0B or similar shows as inactive.*
+
+# Verification
 
 [//]: # (host:controlplane01)
 
