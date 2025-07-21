@@ -221,6 +221,16 @@ Going forward all activities are to be done on the `node02` node until [step 11]
 
 Note that kubectl is required here to assist with creating the boostrap kubeconfigs for kubelet and kube-proxy
 
+
+
+## Double check that ARCH is set to the correct type for the system
+Run:
+```bash
+echo $ARCH
+```
+
+Set to the correct type e.g. arm64 if current value is wrong
+
 ```bash
 KUBE_VERSION=$(curl -L -s https://dl.k8s.io/release/stable.txt)
 
@@ -436,6 +446,44 @@ WantedBy=multi-user.target
 EOF
 ```
 
+## Swap set to ON, on VM might cause Kubelet failure to start (or kubelet status hangs on 'activating')
+Checks
+
+```bash
+sudo service kubelet status
+```
+
+If output shows the process stuck on 'loading'... Run
+
+```bash
+sudo journalctl -u kubelet -r
+```
+Displays log entries for the service in reverse order. 
+If reason for failure includes something like '...can not run with swap active...'
+Disable swap on the vm by following these steps. 
+
+*Some ubuntu vm box configurations run with Vagrant have swap turned ON by default. Kubernetes is set to not allow this setting as it confuses RAM monitoring by making a part of the system hard drive(s) usable as Memory, when RAM is full. Kubernetes likes to have full view/control of the actual RAM available on the system with no fakers*
+
+```bash
+sudo swapoff -a
+```
+
+Become root
+```bash
+sudo su
+```
+
+Edit fstab file and comment out the line that contains swap (add # in front of it).
+```bash
+sudo vim /etc/fstab
+```
+
+Verify it's off:
+
+```bash
+free -h
+```
+### *Ensure Swap: 0B or similar shows as inactive.*
 
 ## Step 10 Start the Worker Services
 

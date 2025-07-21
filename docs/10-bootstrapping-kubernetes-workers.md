@@ -11,6 +11,10 @@ We will now install the kubernetes components
 The Certificates and Configuration are created on `controlplane01` node and then copied over to workers using `scp`.
 Once this is done, the commands are to be run on first worker instance: `node01`. Login to first worker instance using SSH Terminal.
 
+### Note
+The manual method for configuring TLS on the worker nodes described below is mostly for learning purposes. 
+There is a less manual, more scalable way using auto-bootstrapping options described in the next document on this thread.
+
 ### Provisioning Kubelet Client Certificates
 
 Kubernetes uses a [special-purpose authorization mode](https://kubernetes.io/docs/admin/authorization/node/) called Node Authorizer, that specifically authorizes API requests made by [Kubelets](https://kubernetes.io/docs/concepts/overview/components/#kubelet). In order to be authorized by the Node Authorizer, Kubelets must use a credential that identifies them as being in the `system:nodes` group, with a username of `system:node:<nodeName>`. In this section you will create a certificate for each Kubernetes worker node that meets the Node Authorizer requirements.
@@ -303,7 +307,7 @@ Checks
 sudo service kubelet status
 ```
 
-If output shows the process stuck on 'loading'... Run
+If output shows the process stuck on 'activating'... Run
 
 ```bash
 sudo journalctl -u kubelet -r
