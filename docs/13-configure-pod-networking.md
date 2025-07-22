@@ -26,7 +26,7 @@ It may take up to 60 seconds for the Weave pods to be ready.
 
 [//]: # (command:kubectl rollout status daemonset weave-net -n kube-system --timeout=90s)
 
-List the registered Kubernetes nodes from the controlplane node:
+List the registered Kubernetes pods from the controlplane node:
 
 ```bash
 kubectl get pods -n kube-system
